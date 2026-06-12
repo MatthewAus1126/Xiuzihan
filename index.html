@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我们的故事</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Georgia", "SimSun", serif;
+      background: #0d0d0d;
+      color: #e8dcc8;
+      min-height: 100vh;
+    }
+
+    /* ── 顶部封面 ── */
+    .cover {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cover-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1a0a1e 0%, #0d1a2e 50%, #1a0a12 100%);
+    }
+
+    /* 把这里的 src 换成你们的合照路径，例如 "photos/cover.jpg" */
+    .cover-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+      filter: blur(2px);
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+    }
+
+    .cover-date {
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      color: #c9a96e;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .cover-title {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: #f5ede0;
+      margin-bottom: 1rem;
+    }
+
+    .cover-subtitle {
+      font-size: 1.1rem;
+      color: #a89070;
+      font-style: italic;
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #6a5a48;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── 内容区 ── */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      color: #c9a96e;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── 给她的信 ── */
+    .letter {
+      border-left: 2px solid #3a2a1a;
+      padding-left: 2rem;
+    }
+
+    .letter p {
+      font-size: 1.1rem;
+      line-height: 2;
+      color: #c8b89a;
+      margin-bottom: 1.2rem;
+    }
+
+    .letter .signature {
+      margin-top: 2rem;
+      font-style: italic;
+      color: #8a7060;
+    }
+
+    /* ── 照片时间线 ── */
+    .photo-timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .photo-timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, #c9a96e44, transparent);
+    }
+
+    .pt-entry {
+      position: relative;
+      margin-bottom: 3.5rem;
+    }
+
+    .pt-entry::before {
+      content: "";
+      position: absolute;
+      left: -2.35rem;
+      top: 0.45rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c9a96e;
+      box-shadow: 0 0 6px #c9a96e66;
+    }
+
+    .pt-date {
+      font-size: 0.8rem;
+      color: #c9a96e;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.8rem;
+    }
+
+    .pt-note {
+      font-size: 0.95rem;
+      color: #a89070;
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+
+    .pt-photos {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .pt-photos .photo-item {
+      flex: 1 1 200px;
+      max-width: 320px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      aspect-ratio: 4/3;
+      background: #1a1410;
+    }
+
+    .pt-photos .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease, opacity 0.3s;
+      opacity: 0.85;
+      cursor: zoom-in;
+    }
+
+    .pt-photos .photo-item:hover img {
+      transform: scale(1.04);
+      opacity: 1;
+    }
+
+    .pt-photos .photo-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    .pt-photos .photo-item:hover video { opacity: 1; }
+
+    .pt-photos .photo-item.portrait {
+      aspect-ratio: 9 / 16;
+      max-width: 320px;
+    }
+
+    /* 单张照片时宽一些 */
+    .pt-photos.single .photo-item {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 16/9;
+    }
+
+    /* ── 灯箱（点击放大） ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.92);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+
+    #lightbox.open { display: flex; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+
+    /* ── 时间线 ── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.4rem;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, #3a2a1a, transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -2.35rem;
+      top: 0.4rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c9a96e;
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      color: #c9a96e;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-text {
+      font-size: 1rem;
+      color: #a89878;
+      line-height: 1.8;
+    }
+
+    /* ── 分隔线 ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #2a1e14;
+      margin: 0 2rem;
+    }
+
+    /* ── 结尾 ── */
+    .ending {
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    .ending-quote {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 300;
+      color: #d4c4a8;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      font-style: italic;
+    }
+
+    .ending-sub {
+      font-size: 0.9rem;
+      color: #5a4a3a;
+      letter-spacing: 0.2em;
+    }
+
+    /* ── 进入遮罩 ── */
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0d0d0d;
+      transition: opacity 0.8s ease;
+    }
+
+    #intro.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .intro-title {
+      font-size: clamp(1.8rem, 6vw, 3.5rem);
+      font-weight: 300;
+      color: #f5ede0;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.6rem;
+    }
+
+    .intro-sub {
+      font-size: 0.85rem;
+      color: #6a5a48;
+      letter-spacing: 0.3em;
+      margin-bottom: 3.5rem;
+    }
+
+    .intro-btn {
+      border: 1px solid #c9a96e;
+      background: transparent;
+      color: #c9a96e;
+      font-size: 0.85rem;
+      letter-spacing: 0.4em;
+      padding: 0.9rem 2.8rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .intro-btn:hover {
+      background: #c9a96e;
+      color: #0d0d0d;
+    }
+
+    .intro-hint {
+      margin-top: 1.2rem;
+      font-size: 0.7rem;
+      color: #3a2a1a;
+      letter-spacing: 0.2em;
+    }
+
+    /* ── 移动端适配 ── */
+    @media (max-width: 600px) {
+      .section { padding: 3rem 1.2rem; }
+
+      .pt-photos { flex-direction: column; }
+      .pt-photos .photo-item { max-width: 100%; flex: none; width: 100%; }
+      .pt-photos.single .photo-item { max-width: 100%; }
+      .pt-photos .photo-item.portrait { max-width: 100%; }
+
+      .cover-subtitle { font-size: 0.95rem; }
+      .letter p { font-size: 1rem; }
+
+      #bgm-btn { bottom: 1.2rem; right: 1.2rem; }
+
+      #lightbox img { max-width: 98vw; max-height: 85vh; }
+    }
+
+    /* ── BGM 控制按钮 ── */
+    #bgm-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #3a2a1a;
+      background: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+
+    #bgm-btn:hover {
+      border-color: #c9a96e;
+      transform: scale(1.08);
+    }
+
+    #bgm-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #c9a96e;
+      transition: opacity 0.3s;
+    }
+
+    /* 旋转动画：播放中时音符图标慢转 */
+    #bgm-btn.playing svg {
+      animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ 封面 ══ -->
+  <section class="cover">
+    <div class="cover-bg"></div>
+    <!-- 把 src 换成你们的照片，不换的话显示纯色背景 -->
+    <img class="cover-photo" src="photos/cover.jpg" alt="" onerror="this.style.display='none'" />
+    <div class="cover-content">
+      <p class="cover-date">2025 &nbsp;—&nbsp; 2026</p>
+      <h1 class="cover-title">我们的歌</h1>
+      <p class="cover-subtitle">
+        我们这一路磕磕绊绊，但还是走到了这里。
+      </p>
+    </div>
+    <p class="scroll-hint">↓ &nbsp; 向下滚动</p>
+  </section>
+
+  <!-- ══ 给她的信 ══ -->
+  <section class="section">
+    <p class="section-label">给你的一封信</p>
+    <div class="letter">
+      <p>嗨 修子涵，</p>
+      <p>我希望你能看到这封信。</p>
+      <p>我不知道该怎么开口，那些我们一起走过的路、一起看过的夜晚、一起吃过的饭，我都记着，大概会记很久很久。</p>
+      <p>我知道这一路走来不容易，对你来说有辛苦，也有委屈，我都知道。</p>
+      <p>谢谢你，谢谢你这一年多以来的陪伴、容忍。对不起，对不起给你带来的痛苦、失望。</p>
+      <p>有时候我做了一些让你不开心的事，说了一些不该说的话。我知道那些让你难受了。但如果你愿意往里看一层，你会发现那些背后都是因为我太在乎你——在乎到有时候控制不好自己的情绪，在乎到一点点风吹草动都能让我不安。这不是借口，我只是想让你知道，那些让你委屈的瞬间，从来不是因为我不爱你，恰恰是因为我太爱你了。</p>
+      <p>我没办法假装这一年我们没有吵过架，没有让彼此难受过。但我也没办法假装，那些好的时光不存在。我们这一年多经历的这么多——那些都是真的，都是我们的。</p>
+      <p>我不知道你现在心里是怎么想的。但我想告诉你，我还没有放弃。</p>
+      <p>我不想强迫你做任何决定。不管你最后怎么选择，我都希望你知道，你是我这么久以来，爱得最认真、最真心的那一个。</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ══ 照片时间线 ══ -->
+  <section class="section">
+    <p class="section-label">我们的时光</p>
+    <div class="photo-timeline">
+
+      <!--
+        使用说明：
+        - 每个 pt-entry 是一个日期节点
+        - pt-date 填日期
+        - pt-note 填这一天/这段时间想说的话（可以删掉这行）
+        - pt-photos 里放照片，src 填路径
+        - 只有一张照片时给 pt-photos 加 class="pt-photos single"
+        - 复制整个 pt-entry 块来添加新的日期节点
+      -->
+
+      <!-- 节点 1 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 2 月 22 日</p>
+        <p class="pt-note">嗨，修子涵，这是我们第一次一起看演唱会，虽然我们还不认识，但缘分让我们冥冥之中已经在靠近对方了。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0406.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.2.22'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 2 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 2 月 28 日</p>
+        <p class="pt-note">这是我第一次去palm beach拍下了这张星空发给了你，借此引起了你的注意。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0573.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.2.28'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 3 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 3 日</p>
+        <p class="pt-note">我们第一次见面，很抱歉带你吃了一家不怎么好吃的寿喜烧，但它也许是我吃过最好吃的寿喜烧。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/first date.png" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.3.3'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 4 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 6 日</p>
+        <p class="pt-note">在我的再三要求下，终于第二次见面啦。我永远记得你那天穿的衣服，那是我最喜欢的一套之一。那天也是我第一次帮你买水搬水。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0598.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.3.6'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 5 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 13 日</p>
+        <p class="pt-note">这应该算是我们第一次出去玩吧？还记得出发前给你的小蛋糕吗。动物园的景色很美，但比你略逊一筹。</p>
+        <div class="pt-photos">
+          <div class="photo-item">
+            <img src="photos/IMG_0629.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=2025.3.13'" />
+          </div>
+          <div class="photo-item">
+            <img src="photos/IMG_0637.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=2025.3.13'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 6 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 18 日</p>
+        <p class="pt-note">我们第一次去Kiama，第一次去南天寺，我当时许的愿望是希望你天天开心。你当时哭了，我以为你是为了别的男人哭，我很难受。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0653.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.3.18'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 7 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 26 日</p>
+        <p class="pt-note">你第一次跟我去徐总家吃饭，为此还特地买了条裙子。可是好像后来也没咋见你穿过。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0681.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.3.26'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 8 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 28 日</p>
+        <p class="pt-note">我们俩大半夜跑到深山野林去看星星，到了地方太黑不敢下车，草草用支架拍了张星空。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0690.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.3.28'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 9 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 3 月 30 日</p>
+        <p class="pt-note">我们在一起了，天知道我有多开心，那天晚上我被你迷得挪不开眼。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/get together.png" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.3.30'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 10 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 4 月 1 日</p>
+        <p class="pt-note">我偷偷瞒着你跑出门买了这个手链。你说你想要VCA，虽然我买不起，但我也想在我的能力范围内给你最好的东西。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0700.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.4.1'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 11 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 4 月 3 日</p>
+        <p class="pt-note">还记得吗，修子涵。我们去Diamond Bay放仙女棒。你就是我的小仙女。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_2385.PNG" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.4.3'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 节点 12 -->
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 4 月 16 日</p>
+        <p class="pt-note">我们去Easter Show啦。还记得这个鸭鸭吗？我猜你只记得我坐那天飞天椅子害怕的样子了。</p>
+        <div class="pt-photos single">
+          <div class="photo-item">
+            <img src="photos/IMG_0731.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.4.16'" />
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 4 月 25 日</p>
+        <p class="pt-note">Burwood的什么火锅，名字我都忘了，但对面这个身影我忘不了。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0744.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.4.25'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 5 月 3 日</p>
+        <p class="pt-note">修子涵，我永远记得你在和我喝酒的时候说记得别的男人的喜好。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2386.PNG" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.5.3'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 5 月 15 日</p>
+        <p class="pt-note">有一个小傻子把她的口红落在我这了。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0793.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.5.15'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 5 月 21 日</p>
+        <p class="pt-note">这是我们第一次吃gogi wang，小肠真的好好吃。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0807.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.5.21'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 5 月 23 日</p>
+        <p class="pt-note">修子涵，还记得这个红烧肉吗，可惜我做少了，你应该没吃饱吧。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0818.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.5.23'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 6 月 5 日</p>
+        <p class="pt-note">路过你家。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0864.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.6.5'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 6 月 6 日</p>
+        <p class="pt-note">这个韩料好像一般般噢，我们都没吃完。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0867.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.6.6'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 6 月 9 日</p>
+        <p class="pt-note">我们在家煮饺子吃，有点过于简单了哈哈哈。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0868.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.6.9'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 6 月 14 日</p>
+        <p class="pt-note">有个小傻子看我抽烟偏要学。不过也好，以后你每次抽烟的时候是不是都会想起我。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_0881.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.6.14'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 7 月 4 日</p>
+        <p class="pt-note">第一次吃burwood这家烤肉，其实调料比肉好吃。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1043.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.7.4'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 7 月 14 日</p>
+        <p class="pt-note">小傻瓜躺卡了哈哈哈，酒量真的不太行噢。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1062.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.7.14'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 7 月 19 日</p>
+        <p class="pt-note">我们去了法国集市。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2387.PNG" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.7.19'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 7 月 21 日</p>
+        <p class="pt-note">在家尝试做了蛋挞，非常好吃。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1083.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.7.21'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 10 月 5 日</p>
+        <p class="pt-note">和happy哥一起出海看了鲸鱼。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1317.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.10.5'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 10 月 5 日</p>
+        <p class="pt-note">晚上到burwood修子涵第一次吃了肉月饼，非常好吃，第二天还让我买。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1342.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.10.5'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 10 月 17 日</p>
+        <p class="pt-note">小菜鸡又躺卡了哈哈哈。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1364.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.10.17'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 10 月 25 日</p>
+        <p class="pt-note">有人怎么这么有心机，拍床照把自己脸遮住，露出别人的。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1388.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.10.25'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 2 日</p>
+        <p class="pt-note">去chatswood边上想划船来着，结果那个船又破人又多。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1421.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.11.2'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 2 日</p>
+        <p class="pt-note">晚上回修子涵家调了个金汤力，然后在大镖客里玩德州。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1423.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.11.2'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 6 日</p>
+        <p class="pt-note">运气好好噢，刮刮乐还中奖了，修子涵能带来好运。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1436.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.11.6'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 8 日</p>
+        <p class="pt-note">这天我们好像也吵架了，然后去blue points，坐在那里抽烟，后来又和好了。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1438.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.11.8'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 8 日</p>
+        <p class="pt-note">吵完架回来又去吃韩料，像什么都没发生过一样。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1444.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.11.8'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 9 日</p>
+        <p class="pt-note">我们又去kiama啦，去南天寺还了愿，这次你没哭。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_1446.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2025.11.9'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 15 日</p>
+        <p class="pt-note">喊了好久的fish market终于去了，回来以后老婆还给我做了鲍鱼饭吃。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_1458.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_1461.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 11 月 26 日</p>
+        <p class="pt-note">宝贝老婆陪我过生日了，我许的愿望是以后的生日xzh都陪我过。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_1492.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_1496.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 12 月 2 日</p>
+        <p class="pt-note">去蓝山玩啦，在山上又吵架了哈哈哈，然后又和好了。蓝山的景色真的很美，可是有你在身边我才有欣赏美景的心情。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_0040.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_0046.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_0048.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item">
+            <video src="photos/IMG_1528.mp4" muted playsinline loop controls></video>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2025 年 12 月 29 日</p>
+        <p class="pt-note">在苏州收到了老婆寄来的爱心草莓和车厘子，有老婆的爱真的会更好吃。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_1866.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_1876.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 1 月 23 日</p>
+        <p class="pt-note">我们回布里斯班了，其实可能在10年前我们在布里斯班的king george square就见过，但我们过了这么多年才真正认识了彼此，缘分让我们相遇乱世以外。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_2005.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item portrait">
+            <video src="photos/IMG_2006.mp4" muted playsinline loop controls></video>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 1 月 24 日</p>
+        <p class="pt-note">我们在sunnybank吃了博多屋，喝了taro frappe，然后驱车去了movie world。然后又又又又又又吵架啦，吃晚饭的时候我忍不住就哭了，我感觉到我们可能迟早会分开。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_2008.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_2010.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_2022.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 1 月 25 日</p>
+        <p class="pt-note">我很难受，睡不着，自己默默去了海边看了日出。修子涵，你当时感觉到我出门的时候，在想什么呢？</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2025.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.1.25'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 2 月 6 日</p>
+        <p class="pt-note">糟糕，我不记得这是哪里了，你可以帮我回忆一下吗？</p>
+        <div class="pt-photos single">
+          <div class="photo-item portrait">
+            <video src="photos/IMG_2104.mp4" muted playsinline loop controls></video>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 2 月 21 日</p>
+        <p class="pt-note">修子涵心心念念的保龄球终于打了噢，还玩急眼啦哈哈哈。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2142.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.2.21'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 2 月 23 日</p>
+        <p class="pt-note">这是谁做的饭菜呀，咋这么好吃，一定是某个仙女吧。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2148.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.2.23'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 3 月 14 日</p>
+        <p class="pt-note">我一直很想漂的头发，终于在修子涵的怂恿下完成了，还不错哦。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2192.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.3.14'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 3 月 30 日</p>
+        <p class="pt-note">一周年纪念日。我们终于一年了。这一年说快也快，说慢也慢。我们在争吵和磕磕绊绊中走过来了，很不容易，但也很幸福。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2668.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.3.30'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 4 月 12 日</p>
+        <p class="pt-note">和修子涵坐上了我心心念念的邮轮。你曾经说以为这是我们最后一次旅行，回来就会散伙，而且在船上我们又吵架了。我其实也这么以为过。但每次情绪过后，我对你的爱丝毫没减，我还是想和你在一起。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2235.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.4.12'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 4 月 25 日</p>
+        <p class="pt-note">我的宝贝又做我最爱吃的牛肉和手撕包菜了，你的手撕包菜真的做的很棒。</p>
+        <div class="pt-photos single">
+          <div class="photo-item"><img src="photos/IMG_2254.jpg" alt="" onerror="this.src='https://placehold.co/480x270/1a1410/3a2a1a?text=2026.4.25'" /></div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 5 月 8 日</p>
+        <p class="pt-note">有人非要给我拍什么洪之玮同款，笑死我啦。</p>
+        <div class="pt-photos single">
+          <div class="photo-item portrait">
+            <video src="photos/IMG_3433.mp4" muted playsinline loop controls></video>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-entry">
+        <p class="pt-date">2026 年 5 月 16 日</p>
+        <p class="pt-note">我很喜欢和你一起坐在公园里聊天，我想永远都能和你一起散步，一起吃饭，一起聊天，一起无所事事。</p>
+        <div class="pt-photos">
+          <div class="photo-item"><img src="photos/IMG_3549.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_3630.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+          <div class="photo-item"><img src="photos/IMG_3643.jpg" alt="" onerror="this.src='https://placehold.co/400x300/1a1410/3a2a1a?text=Photo'" /></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 灯箱（点击照片放大） -->
+  <div id="lightbox">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <hr class="divider" />
+
+  <!-- ══ 时间线 ══ -->
+  <section class="section">
+    <p class="section-label">我们走过的时间</p>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <p class="timeline-date">2025 年 3 月</p>
+        <p class="timeline-text">第一次见面，在Burwood。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="timeline-date">2025 年 3 月</p>
+        <p class="timeline-text">我们在一起了。那晚月色很美。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="timeline-date">2026 年 1 月</p>
+        <p class="timeline-text">第一次一起回了布里斯班，说以后要一起在这里生活。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="timeline-date">2026 年 6 月</p>
+        <p class="timeline-text">故事走到了这里。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ 结尾 ══ -->
+  <section class="ending">
+    <p class="ending-quote">
+      "认识你让我的幸福如此悦耳"
+    </p>
+    <p class="ending-sub">谢谢你 &nbsp;·&nbsp; 2025 — 2026</p>
+  </section>
+
+  <!-- ══ 进入遮罩 ══ -->
+  <div id="intro">
+    <p class="intro-title">请问你是修子涵吗？</p>
+    <button class="intro-btn" onclick="enterSite()">我 是</button>
+    <p class="intro-hint">♪ 建议开启声音</p>
+  </div>
+
+  <!-- ══ BGM ══ -->
+  <!-- 把 src 换成你的音乐文件路径，支持 mp3 / ogg，例如 "music/song.mp3" -->
+  <audio id="bgm" loop preload="auto" autoplay>
+    <source src="music/bgm.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- 右下角播放按钮 -->
+  <button id="bgm-btn" title="播放 / 暂停">
+    <!-- 音符图标 -->
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 3v10.55A4 4 0 1 0 11 17V7h4V3H9z"/>
+    </svg>
+  </button>
+
+  <script>
+    const audio = document.getElementById('bgm');
+    const btn   = document.getElementById('bgm-btn');
+    const intro = document.getElementById('intro');
+
+    audio.volume = 0;
+
+    function fadeIn() {
+      let v = 0;
+      const t = setInterval(() => {
+        v = Math.min(v + 0.02, 0.6);
+        audio.volume = v;
+        if (v >= 0.6) clearInterval(t);
+      }, 80);
+    }
+
+    function fadeOut(cb) {
+      let v = audio.volume;
+      const t = setInterval(() => {
+        v = Math.max(v - 0.03, 0);
+        audio.volume = v;
+        if (v <= 0) { clearInterval(t); cb && cb(); }
+      }, 60);
+    }
+
+    function enterSite() {
+      intro.classList.add('hide');
+      setTimeout(() => intro.remove(), 900);
+      audio.play().then(() => {
+        btn.classList.add('playing');
+        fadeIn();
+      }).catch(() => {});
+    }
+
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().then(() => {
+          btn.classList.add('playing');
+          fadeIn();
+        }).catch(() => {});
+      } else {
+        fadeOut(() => {
+          audio.pause();
+          btn.classList.remove('playing');
+        });
+      }
+    });
+
+    // 灯箱
+    const lightbox    = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.pt-photos .photo-item img').forEach(img => {
+      img.addEventListener('click', e => {
+        e.stopPropagation();
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('open');
+      lightboxImg.src = '';
+    });
+
+    // 页面首次有交互时自动尝试播放（部分浏览器限制自动播放）
+    document.addEventListener('click', function autoPlay() {
+      if (audio.paused && audio.src) {
+        audio.play().then(() => {
+          btn.classList.add('playing');
+          fadeIn();
+        }).catch(() => {});
+      }
+      document.removeEventListener('click', autoPlay);
+    }, { once: true });
+  </script>
+
+</body>
+</html>
