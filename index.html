@@ -354,18 +354,20 @@
 
     .intro-btn {
       border: 1px solid #c9a96e;
-      background: transparent;
-      color: #c9a96e;
-      font-size: 0.85rem;
-      letter-spacing: 0.4em;
-      padding: 0.9rem 2.8rem;
+      background: #c9a96e;
+      color: #0d0d0d;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      padding: 0.65rem 2rem;
+      border-radius: 999px;
       cursor: pointer;
-      transition: background 0.3s, color 0.3s;
+      box-shadow: 0 0 12px rgba(201, 169, 110, 0.4), 0 0 30px rgba(201, 169, 110, 0.2);
+      transition: box-shadow 0.3s, transform 0.2s;
     }
 
     .intro-btn:hover {
-      background: #c9a96e;
-      color: #0d0d0d;
+      box-shadow: 0 0 24px rgba(201, 169, 110, 0.7), 0 0 55px rgba(201, 169, 110, 0.35);
+      transform: scale(1.04);
     }
 
     .intro-hint {
@@ -462,8 +464,8 @@
       <p>谢谢你，谢谢你这一年多以来的陪伴、容忍。对不起，对不起给你带来的痛苦、失望。</p>
       <p>有时候我做了一些让你不开心的事，说了一些不该说的话。我知道那些让你难受了。但如果你愿意往里看一层，你会发现那些背后都是因为我太在乎你——在乎到有时候控制不好自己的情绪，在乎到一点点风吹草动都能让我不安。这不是借口，我只是想让你知道，那些让你委屈的瞬间，从来不是因为我不爱你，恰恰是因为我太爱你了。</p>
       <p>我没办法假装这一年我们没有吵过架，没有让彼此难受过。但我也没办法假装，那些好的时光不存在。我们这一年多经历的这么多——那些都是真的，都是我们的。</p>
-      <p>我不知道你现在心里是怎么想的。但我想告诉你，我还没有放弃。</p>
-      <p>我不想强迫你做任何决定。不管你最后怎么选择，我都希望你知道，你是我这么久以来，爱得最认真、最真心的那一个。</p>
+      <p>我不想强迫你做任何决定。不管你最后怎么选择，我都希望你知道，你是我自懂事以来第一个想要有结局的人。</p>
+      <p>请你最后再花点时间陪我回顾一下这段旅程。</p>
     </div>
   </section>
 
@@ -960,31 +962,15 @@
 
   <hr class="divider" />
 
-  <!-- ══ 时间线 ══ -->
+  <!-- ══ 第二段话 ══ -->
   <section class="section">
-    <p class="section-label">我们走过的时间</p>
-    <div class="timeline">
-
-      <div class="timeline-item">
-        <p class="timeline-date">2025 年 3 月</p>
-        <p class="timeline-text">第一次见面，在Burwood。</p>
-      </div>
-
-      <div class="timeline-item">
-        <p class="timeline-date">2025 年 3 月</p>
-        <p class="timeline-text">我们在一起了。那晚月色很美。</p>
-      </div>
-
-      <div class="timeline-item">
-        <p class="timeline-date">2026 年 1 月</p>
-        <p class="timeline-text">第一次一起回了布里斯班，说以后要一起在这里生活。</p>
-      </div>
-
-      <div class="timeline-item">
-        <p class="timeline-date">2026 年 6 月</p>
-        <p class="timeline-text">故事走到了这里。</p>
-      </div>
-
+    <p class="section-label">还有一些话</p>
+    <div class="letter">
+      <p>谢谢你耐心的看到这里。</p>
+      <p>我不舍得，我没法想象以后没有你的日子，因为从我们俩认识以来，我对未来的规划都是基于你在我的身边。</p>
+      <p>我爱你</p>
+      <p>祝你以后一切顺利</p>
+      <p>希望你以后不要忘了我</p>
     </div>
   </section>
 
@@ -999,7 +985,7 @@
   <!-- ══ 进入遮罩 ══ -->
   <div id="intro">
     <p class="intro-title">请问你是修子涵吗？</p>
-    <button class="intro-btn" onclick="enterSite()">我 是</button>
+    <button class="intro-btn" onclick="enterSite()">是的</button>
     <p class="intro-hint">♪ 建议开启声音</p>
   </div>
 
